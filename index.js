@@ -1,22 +1,35 @@
 const express = require("express")
+const session = require("express-session")
 
 const connectDB = require("./db")
 
-const User = require("./models/user")
-const Link = require("./models/link")
-
 const authRouter = require("./routes/auth.router")
+
+const { isLoggedIn } = require("./middleware")
 
 const app = express()
 
-
+// app.set("env", "production")
 app.set("view engine", "ejs")
 app.set("views", "views")
 app.use(express.urlencoded({ extended: false }))
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    //TODO Use redis session store
+    // cookie: { secure: true }
+}))
 
 
 app.get("/", (req, res) => {
     res.render("index")
+})
+
+app.get("/home", isLoggedIn, (req, res) => {
+    const { username } = req.session.user
+
+    res.render("home", { username })
 })
 
 // Handle auth routes
