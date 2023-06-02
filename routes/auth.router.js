@@ -17,13 +17,14 @@ authRouter.post("/signup", async (req, res) => {
     //TODO: Add client side validation for alphanumeric username
     const { username, email, password } = req.body
 
+    // Create new user with given details
     const user = new User({ username, email, password })
 
     
     try {
         await user.validate()
     } catch (err) {
-        console.error()
+        console.error(err)
         //TODO: Perform validation
     }
 
@@ -47,9 +48,9 @@ authRouter.post("/signin", async (req, res) => {
 
     const user = await User.findOne({ email })
 
-    if (!user) res.status(404).send("Sorry that user does not exist")
-
-    if (! await user.validatePassword(password)) res.status(401).send("Wrong password")
+    if (!user) return res.status(404).send("Sorry that user does not exist")
+    console.log(password, await user.validatePassword(password))
+    if (! await user.validatePassword(password)) return res.status(401).send("Wrong password")
 
     // Create a session of the user
     req.session.user = {

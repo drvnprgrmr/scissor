@@ -21,6 +21,7 @@ const linkSchema = new Schema({
             validator: isURL
         }
     },
+    description: String, // Optional description of link
     alias: {
         type: String,
         required: true,

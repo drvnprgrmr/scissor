@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Create a new link</title>
+    </head>
+
+    <body>
+        <header>
+            <div>
+                <h1>Scissor</h1>
+            </div>
+            <div>
+                <p><%= username %></p>
+                <a href="/auth/logout">Log out</a>
+            </div>
+        </header>
+
+        <main>
+            <h1>Create a new link</h1>
+            <form method="post">
+                <div class="form-field">
+                    <label for="field-url">URL</label>
+                    <input
+                        type="text"
+                        name="url"
+                        id="field-url"
+                        placeholder="Enter destination URL"
+                    />
+                </div>
+
+                <div class="form-field">
+                    <label for="field-description">Description (Optional)</label>
+                    <input
+                        type="text"
+                        name="description"
+                        id="field-description"
+                        placeholder="A short description of the URL"
+                    />
+                </div>
+
+                <div class="form-field">
+                    <label for="field-alias">Custom Alias</label>
+                    <input
+                        type="text"
+                        name="alias"
+                        id="field-alias"
+                        placeholder="Leave blank to generate random"
+                    />
+                </div>
+
+                <input type="submit" value="Create link" />
+            </form>
+        </main>
+    </body>
+</html>

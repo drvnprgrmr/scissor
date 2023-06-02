@@ -4,6 +4,7 @@ const session = require("express-session")
 const connectDB = require("./db")
 
 const authRouter = require("./routes/auth.router")
+const linkRouter = require("./routes/link.router")
 
 const { isLoggedIn } = require("./middleware")
 
@@ -35,11 +36,14 @@ app.get("/home", isLoggedIn, (req, res) => {
 // Handle auth routes
 app.use("/auth", authRouter)
 
+// Handle link routes (requiring the user to be logged in)
+app.use("/link", isLoggedIn, linkRouter)
+
 
 // Handle unknown routes
 app.use((req, res, next) => {
-    res.status(404).send({
-        message: "Sorry, the route you requested does not exist!"
+    res.status(404).render("404", { 
+        username: req.session.user?.username
     })
     next()
 })

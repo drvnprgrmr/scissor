@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Link: <%= link.alias %></title>
+    </head>
+
+    <body>
+        <header>
+            <div>
+                <h1>Scissor</h1>
+            </div>
+            <div>
+                <p><%= username %></p>
+                <a href="/auth/logout">Log out</a>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <div class="link-details">
+                    <h2 class="link-alias"><%= link.alias %></h2>
+                    <% if (link.description) { %>
+                    <h3 class="link-desc"><%= link.description %></h3>
+                    <% } %>
+                    <p>
+                        URL:
+                        <a
+                            href="<%= link.url %>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <% if (link.url.length < 50) { %> <%= link.url %> <%
+                            } else { %> <%= link.url.slice(0, 50) + "..." %> <%
+                            } %>
+                        </a>
+                    </p>
+                </div>
+                <div id="qrcode"></div>
+            </section>
+
+            <section>
+                <h2>Clicks: <%= link.clicks %></h2>
+                <h2>Scans: <%= link.scans %></h2>
+            </section>
+        </main>
+    </body>
+</html>
