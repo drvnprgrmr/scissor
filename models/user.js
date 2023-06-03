@@ -2,7 +2,6 @@ const { Schema, model } = require("mongoose")
 const bcrypt = require("bcrypt")
 const { isEmail } = require("validator").default
 
-const Link = require("./link")
 
 const userSchema =  new Schema({
     username: {
@@ -26,22 +25,31 @@ const userSchema =  new Schema({
     },
     links: [{
         type: Schema.Types.ObjectId,
-        ref: Link
+        ref: "Link"
     }]
 })
 
 
 
 userSchema.pre("save", async function (next) {
+    // Generate salt
+    const salt = await bcrypt.genSalt(10);
+
     // Hash the password
-    this.password = await bcrypt.hash(this.password, 10)
-    
+    const hash = await bcrypt.hash(this.password, salt);
+
+    // Save the hashed password
+    this.password = hash
+
     next()
 })
 
 userSchema.method("validatePassword", async function (password) {
     // Compare to check if the password is valid
-    return await bcrypt.compare(password, this.password)
+    const isValid = await bcrypt.compare(password, this.password)
+
+    // Return the result
+    return isValid
 })
 
 

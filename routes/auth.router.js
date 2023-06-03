@@ -20,11 +20,10 @@ authRouter.post("/signup", async (req, res) => {
     // Create new user with given details
     const user = new User({ username, email, password })
 
-    
     try {
         await user.validate()
     } catch (err) {
-        console.error(err)
+        console.error(err, err.message)
         //TODO: Perform validation
     }
 

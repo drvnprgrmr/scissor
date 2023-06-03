@@ -34,13 +34,16 @@ linkRouter.post("/create", async (req, res) => {
         //TODO: Perform validation
     }
 
-    // Save the link
-    await link.save()
-    
     // Grab logged in user
     const { id } = req.session.user
     const user = await User.findById(id).exec()
 
+    // Associate the link with the user
+    link.createdBy = id
+
+    // Save the link
+    await link.save()
+    
     // Add link to user's created links
     user.links.push(link.id)
 
