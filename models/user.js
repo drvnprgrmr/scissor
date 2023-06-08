@@ -14,11 +14,17 @@ const userSchema =  new Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         validate: {
             validator: isEmail
         }
     },
+    // // Track activated accounts
+    // isActivated: {
+    //     type: Boolean,
+    //     default: false
+    // },
     password: {
         type: String,
         required: true
@@ -30,16 +36,13 @@ const userSchema =  new Schema({
 })
 
 
-
+// Hash passwords
 userSchema.pre("save", async function (next) {
-    // Generate salt
-    const salt = await bcrypt.genSalt(10);
+    // Only run this function if password was actually modified (or is new)
+    if (!this.isModified('password')) return next();
 
-    // Hash the password
-    const hash = await bcrypt.hash(this.password, salt);
-
-    // Save the hashed password
-    this.password = hash
+    // Hash password and save it
+    this.password = await bcrypt.hash(this.password, 10);
 
     next()
 })

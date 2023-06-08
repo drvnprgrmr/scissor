@@ -1,18 +1,26 @@
-const express = require("express")
+const linkRouter = require("express").Router()
 const randomstring = require("randomstring")
 
 const User = require("../models/user")
 const Link = require("../models/link")
 
-const linkRouter = express.Router()
 
+linkRouter.get("/", async (req, res) => {
+    // Get the logged in user
+    const { id, username } = req.session.user
+    const user = await User.findById(id).populate("links").lean().exec()
 
+    // Render the page with the links
+    res.render("link/index", { username, links: user.links })
+})
+
+// Get page to create link
 linkRouter.get("/create", (req, res) => {
     const { username } = req.session.user
     res.render("link/create", { username })
 })
 
-
+// Create a new link
 linkRouter.post("/create", async (req, res) => {
     let { url, description, alias } = req.body
     
@@ -27,19 +35,21 @@ linkRouter.post("/create", async (req, res) => {
     // Create a new link
     const link = new Link({ url, description, alias })
     
+    
+    // Grab logged in user
+    const { id } = req.session.user
+    const user = await User.findById(id).exec()
+    
+    // Associate the link with the user
+    link.createdBy = id
+    
+    // Validate link
     try {
         await link.validate()
     } catch (err) {
         console.error(err)
         //TODO: Perform validation
     }
-
-    // Grab logged in user
-    const { id } = req.session.user
-    const user = await User.findById(id).exec()
-
-    // Associate the link with the user
-    link.createdBy = id
 
     // Save the link
     await link.save()
@@ -56,7 +66,7 @@ linkRouter.post("/create", async (req, res) => {
 })
 
 
-
+// View details on a link
 linkRouter.get("/:alias", async (req, res) => {
     // Get alias from the url
     const alias = req.params.alias
@@ -70,7 +80,7 @@ linkRouter.get("/:alias", async (req, res) => {
 
     if (!link) return res.render("link/notFound", { username })
 
-    res.render("link/index", { username, link })
+    res.render("link/analytics", { username, link })
 })
 
 module.exports = linkRouter

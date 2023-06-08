@@ -1,12 +1,8 @@
 const express = require("express")
 const session = require("express-session")
 
+const router = require("./routes/root.router")
 const connectDB = require("./db")
-
-const authRouter = require("./routes/auth.router")
-const linkRouter = require("./routes/link.router")
-
-const { isLoggedIn } = require("./middleware")
 
 const app = express()
 
@@ -19,25 +15,12 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     //TODO Use redis session store
-    // cookie: { secure: true }
+    // cookie: { secure: true } // for production
 }))
 
 
-app.get("/", (req, res) => {
-    res.render("index")
-})
-
-app.get("/home", isLoggedIn, (req, res) => {
-    const { username } = req.session.user
-
-    res.render("home", { username })
-})
-
-// Handle auth routes
-app.use("/auth", authRouter)
-
-// Handle link routes (requiring the user to be logged in)
-app.use("/link", isLoggedIn, linkRouter)
+// Use the apps routes
+app.use("/", router)
 
 
 // Handle unknown routes

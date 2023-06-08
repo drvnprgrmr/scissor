@@ -4,8 +4,9 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Scissor</title>
+        <title>Link: <%= link.alias %></title>
     </head>
+
     <body>
         <header>
             <div>
@@ -18,19 +19,14 @@
         </header>
 
         <main>
-            <h2>Links</h2>
-            <% if (!links.length) { %>
-                <p>Sorry you haven't created any links yet</p>
-                <a href="/link/create">Create Link</a>
-            <% } else { %>
-
-            <% links.forEach(link => { %>
-            <div class="link">
-                <div class="link-info">
-                    <h3 <% if (link.description) { %>
-                        title="<%= link.description %>" <% } %> > <%= link.alias
-                        %>
-                    </h3>
+            <section>
+                <div class="link-details">
+                    <h2 class="link-alias"><%= link.alias %></h2>
+                    <% if (link.description) { %>
+                    <h3 class="link-desc"><%= link.description %></h3>
+                    <% } else { %>
+                        <h3 class="link-desc">No description provided</h3>
+                     <% } %>
                     <p>
                         URL:
                         <a
@@ -44,17 +40,19 @@
                         </a>
                     </p>
                 </div>
+                <div id="qrcode"></div>
+            </section>
 
-                <div class="link-stat">
-                    <p>Hits: <span class="link-hits"><%= link.hits.length %></span></p>
-                    <p>Created: <span class="link-created"><%= link.createdAt %></span></p>
-                </div>
-            </div>
-            <% }); %>
-
-
-            <% } %>
-
+            <section>
+                <h3>Hits: <%= link.hits.length %></h3>
+                <!-- TODO: Add clicks and scans to title -->
+                <ul>
+                    <% link.hits.forEach(hit => { %>
+                        <li> <%= hit %> </li>
+                        <!-- TODO: Detail hit structure -->
+                    <% }) %>
+                </ul>
+            </section>
         </main>
     </body>
 </html>

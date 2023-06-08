@@ -2,16 +2,22 @@ const { Schema, model } = require("mongoose")
 const { isURL } = require("validator").default
 
 
-// const hitSchema = new Schema({
-//     date: {
-//         type: Date,
-//         required: true
-//     },
-//     type: {
-//         type: String,
-//         enum: ["click", "scan"],
-//     }
-// })
+const hitSchema = new Schema({
+    type: {
+        type: String,
+        enum: ["click", "scan"],
+        required: true
+    },
+    // From browser
+    ip: String,
+    referrer: String,
+
+    // External IP API
+    country: String,
+    city: String,
+    timezone: String,
+    isp: String
+}, { timestamps: { createdAt: true, updatedAt: false } })
 
 const linkSchema = new Schema({
     url: {
@@ -21,28 +27,19 @@ const linkSchema = new Schema({
             validator: isURL
         }
     },
-    description: String, // Optional description of link
+    description: String,  // Optional description of link
     alias: {
         type: String,
         required: true,
-        unique: true,
+        unique: true,  // Create a unique index
         immutable: true,
-    },
-    clicks: {
-        type: Number,
-        min: 0,
-        default: 0
-    },
-    scans: {
-        type: Number,
-        min: 0,
-        default: 0
     },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
-    }
+    },
+    hits: [hitSchema]  // Store information on all hits
 
 }, { timestamps: true })
 

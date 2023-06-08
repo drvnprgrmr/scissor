@@ -1,8 +1,6 @@
-const express = require("express")
+const authRouter = require("express").Router()
 
 const User = require("../models/user")
-
-const authRouter = express.Router()
 
 
 // Handle both signin and signup GET requests
@@ -45,10 +43,12 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }).exec()
 
+    // User not found
     if (!user) return res.status(404).send("Sorry that user does not exist")
-    console.log(password, await user.validatePassword(password))
+
+    // Invalid password
     if (! await user.validatePassword(password)) return res.status(401).send("Wrong password")
 
     // Create a session of the user
@@ -58,6 +58,7 @@ authRouter.post("/signin", async (req, res) => {
         email: user.email
     }
 
+    // Redirect the user to the home page
     res.redirect("/home")
 })
 
