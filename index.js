@@ -1,5 +1,9 @@
 const express = require("express")
 const session = require("express-session")
+const rateLimit = require("express-rate-limit").default
+const helmet = require("helmet")
+const compression = require("compression")
+
 
 const router = require("./routes/root.router")
 const connectDB = require("./db")
@@ -9,13 +13,33 @@ const app = express()
 // app.set("env", "production")
 app.set("view engine", "ejs")
 app.set("views", "views")
+
+
+// Set security headers
+app.use(helmet())
+
+// Compress responses 
+app.use(compression())
+
+// Process submitted forms
 app.use(express.urlencoded({ extended: false }))
+
+// Initialize sessions
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     //TODO Use redis session store
     // cookie: { secure: true } // for production
+}))
+
+// Add rate limiting based on the IP
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true, 
+    legacyHeaders: false,
+    //TODO Use redis session store
 }))
 
 
