@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <%- include('partials/headTags') %>
+        <title>Account</title>
+    </head>
+
+    <body>
+        <%- include('partials/header') %>
+        <main>
+            <h1>Manage your Account</h1>
+
+            <!-- Change username -->
+            <!-- ! Make sure it is prepopulated -->
+            <section>
+                <h2>Change your Username</h2>
+                <form action="" method="post">
+                    <div class="form-field">
+                        <label for="field-username">Username</label>
+                        <input type="text" name="username" id="field-username" />
+                    </div>
+                    <input type="submit" value="Update" />
+                </form>
+            </section>
+
+            <!-- Change password -->
+            <section>
+                <h2>Change your password</h2>
+                <form action="" method="post">
+                    <div class="form-field">
+                        <label for="field-cur-password">Current password</label>
+                        <input type="password" name="cur-password" id="field-cur-password" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="field-password">New Password</label>
+                        <input type="password" name="password" id="field-password" />
+                    </div>
+                    <!-- TODO: Implement this -->
+                    <div class="form-field">
+                        <label for="field-password-repeat">Repeat New Password</label>
+                        <input type="password" name="password-repeat" id="field-password-repeat" />
+                    </div>
+                    <input type="submit" value="Update" />
+                </form>
+            </section>
+
+            <!-- ! Implement using clientside javascript -->
+            <!-- ? You might want to use access tokens -->
+            <button>Delete account</button>
+        </main>
+    </body>
+
+</html>

@@ -10,8 +10,11 @@ const { isLoggedIn } = require("../middleware")
 
 
 router.get("/", (req, res) => {
+    // Redirect the user if logged in
+    if (req.session.user) return res.redirect("/home")
+
+    // Display landing page
     res.render("index")
-    res.end()
 })
 
 router.get("/home", isLoggedIn, (req, res) => {

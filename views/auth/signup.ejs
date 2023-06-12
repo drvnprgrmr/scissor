@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
-</head>
-<body>
-    <header>
-        <div>
-            <h1>Scissor</h1>
-        </div>
-    </header>
+    <head>
+        <%- include('../partials/headTags') %>
+        <title>Signup</title>
+    </head>
+    <body>
+        <%- include('../partials/headerPlain') %>
 
-    <main>
+        <main>
+            <form method="post">
+                <div class="form-field">
+                    <label for="field-username">Username</label>
+                    <input type="text" name="username" id="field-username" />
+                </div>
 
-        <form method="post">
-            <div class="form-field">
-                <label for="field-username">Username</label>
-                <input type="text" name="username" id="field-username">
-            </div>
+                <div class="form-field">
+                    <label for="field-email">Email</label>
+                    <input type="email" name="email" id="field-email" />
+                </div>
+                <div class="form-field">
+                    <label for="field-password">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="field-password"
+                    />
+                </div>
+                <!-- TODO: Implement this -->
+                <div class="form-field">
+                    <label for="field-password-repeat">Repeat Password</label>
+                    <input
+                        type="password"
+                        name="password-repeat"
+                        id="field-password-repeat"
+                    />
+                </div>
 
-            <div class="form-field">
-                <label for="field-email">Email</label>
-                <input type="email" name="email" id="field-email">
-            </div>
-            <div class="form-field">
-                <label for="field-password">Password</label>
-                <input type="password" name="password" id="field-password">
-            </div>
-
-            <input type="submit" value="Create">
-
-        </form>
-        
-    </main>
-    
-</body>
+                <input type="submit" value="Create" />
+            </form>
+        </main>
+    </body>
 </html>
