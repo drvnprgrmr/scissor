@@ -2,8 +2,11 @@
     <div>
         <h1><a href="/">Scissor</a></h1>
     </div>
-    <div>
-        <p><%= username %></p>
-        <a href="/auth/logout">Log out</a>
+    <div id="profile" >
+        <span class="material-symbols-outlined">person</span>
+        <ul id="profile-nav">
+            <li><%= username %></li>
+            <li><a href="/auth/logout">Log out</a></li>
+        </ul>
     </div>
 </header>
