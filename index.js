@@ -42,9 +42,11 @@ app.use(rateLimit({
     //TODO Use redis session store
 }))
 
+// Serve static assets
+app.use(express.static("public"))
 
 // Use the apps routes
-app.use("/", router)
+app.use(router)
 
 
 // Handle unknown routes

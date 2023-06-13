@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Nova Mono", monospace;
+    background-image: linear-gradient(45deg, #ffaa00, #ffa200);
+    color: white;
+    
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link, a:visited {
+    color: inherit;
+}
+
+a:hover {
+    opacity: 0.5;
+    transition: all .3s;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 2rem;
+    border-bottom: solid;
+}
+
+header h1 {
+    margin: .6rem 0;
+}
+
+main {
+    flex-grow: 1;
+    margin: 0 5rem;
+}
