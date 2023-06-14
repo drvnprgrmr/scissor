@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <%- include('../partials/headTags') %>
         <title>Scissor</title>
     </head>
+
     <body>
         <%- include('../partials/header') %>
 
         <main>
             <h2>Links</h2>
             <% if (!links.length) { %>
-                <p>Sorry you haven't created any links yet</p>
-                <a href="/link/create">Create Link</a>
+            <p>Sorry you haven't created any links yet</p>
+            <a href="/link/create">Create Link</a>
             <% } else { %>
-
             <% links.forEach(link => { %>
-            <div class="link">
-                <div class="link-info">
-                    <h3 <% if (link.description) { %>
-                        title="<%= link.description %>" <% } %> > <%= link.alias
-                        %>
-                    </h3>
-                    <p>
-                        URL:
-                        <a
-                            href="<%= link.url %>"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <% if (link.url.length < 50) { %> <%= link.url %> <%
-                            } else { %> <%= link.url.slice(0, 40) + "..." %> <%
-                            } %>
-                        </a>
-                    </p>
-                </div>
-
-                <div class="link-stat">
-                    <p>Hits: <span class="link-hits"><%= link.hits.length %></span></p>
-                    <p>Created: <span class="link-created"><%= link.createdAt %></span></p>
-                </div>
-            </div>
-            <% }); %>
-
+                
+                    <div class="link">
+                        <div class="link-info">
+                            <div class="link-alias">
+                                <h4 <% if (link.description) { %> title="<%= link.description %>" <% } %>> 
+                                    <a href="/link/<%= link.alias %>"> <%= link.alias %> </a>
+                                </h4>
+                                <span class="material-symbols-outlined" title="Copy to Clipboard">content_copy</span>
+                            </div>
+                            <div class="link-url" title="<%= link.url %>">
+                                <h5>
+                                    Link URL
+                                </h5>
+                                <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
+                                    <span class="material-symbols-outlined">link</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="link-stat">
+                            <p>Hits: <span><%= link.hits.length %></span></p>
+                            <p>Created:
+                                <span><%= link.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: 'short'}) %></span>
+                            </p>
+                        </div>
+                    </div>
+        
+            <% })%>
 
             <% } %>
 
         </main>
     </body>
+
 </html>

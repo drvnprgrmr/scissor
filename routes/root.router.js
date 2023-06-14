@@ -5,6 +5,7 @@ const authRouter = require("./auth.router")
 const linkRouter = require("./link.router")
 
 const Link = require("../models/link")
+const User = require("../models/user")
 
 const { isLoggedIn } = require("../middleware")
 
@@ -17,10 +18,19 @@ router.get("/", (req, res) => {
     res.render("index")
 })
 
-router.get("/home", isLoggedIn, (req, res) => {
+router.get("/home", isLoggedIn, async (req, res) => {
     const { username } = req.session.user
 
-    res.render("home", { username })
+    // Grab logged in user
+    const { id } = req.session.user
+    const user = await User.findById(id).lean().exec()
+
+    // Get the user's number of links and total hits generated
+    const totalLinks = user.links.length
+    const totalHits = user.totalHits
+
+    // Send data back to the user
+    res.render("home", { username, totalLinks, totalHits })
 })
 
 // Handle auth routes
@@ -43,6 +53,13 @@ router.get("/l/:alias", async (req, res) => {
 
     // Redirect to the url immediately before performing analytics
     res.redirect(link.url)
+
+    // Grab user associated with link 
+    // and increase the total number of hits
+    const user = await User.findById(link.createdBy).exec()
+    user.totalHits += 1
+    await user.save()
+
 
     // Grab the IP address and referrer from the request
     const ip = req.ip

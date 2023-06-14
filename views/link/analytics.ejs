@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <%- include('../partials/headTags') %>
         <title>Link: <%= link.alias %></title>
@@ -9,40 +10,39 @@
         <%- include('../partials/header') %>
 
         <main>
-            <section>
-                <div class="link-details">
-                    <h2 class="link-alias"><%= link.alias %></h2>
+            <section class="links">
+                <div class="l-details">
+                    <h2 class="l-alias"><%= link.alias %></h2>
                     <% if (link.description) { %>
-                    <h3 class="link-desc"><%= link.description %></h3>
+                    <p class="l-desc"><span>Description: </span><%= link.description %></p>
                     <% } else { %>
-                        <h3 class="link-desc">No description provided</h3>
-                     <% } %>
+                    <p class="l-desc">No description provided</p>
+                    <% } %>
                     <p>
-                        URL:
-                        <a
-                            href="<%= link.url %>"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <% if (link.url.length < 50) { %> <%= link.url %> <%
-                            } else { %> <%= link.url.slice(0, 40) + "..." %> <%
-                            } %>
-                        </a>
+                        <span>URL:</span>
+                        <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
+                            <%= link.url %>
+                        </a> 
                     </p>
+                    <p><span>Created at: </span> <%= link.createdAt %></p>
                 </div>
                 <div id="qrcode"></div>
             </section>
 
-            <section>
+            <section class="hits">
                 <h3>Hits: <%= link.hits.length %></h3>
-                <!-- TODO: Add clicks and scans to title -->
-                <ul>
+                <div class="clicks-and-scans">
+                    <h4>Clicks: <%= numClicks %></h4>
+                    <h4>Scans: <%= numScans %></h4>
+                </div>
+                <ul id="hit-list">
                     <% link.hits.forEach(hit => { %>
-                        <li> <%= hit %> </li>
-                        <!-- TODO: Detail hit structure -->
+                    <li class="hit"> <%= hit %> </li>
+                    <!-- TODO: Detail hit structure -->
                     <% }) %>
                 </ul>
             </section>
         </main>
     </body>
+
 </html>

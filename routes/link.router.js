@@ -8,10 +8,10 @@ const Link = require("../models/link")
 linkRouter.get("/", async (req, res) => {
     // Get the logged in user
     const { id, username } = req.session.user
-    const user = await User.findById(id).populate("links").lean().exec()
+    const { links } = await User.findById(id).populate("links").lean().exec()
 
     // Render the page with the links
-    res.render("link/index", { username, links: user.links })
+    res.render("link/index", { username, links })
 })
 
 // Get page to create link
@@ -80,7 +80,16 @@ linkRouter.get("/:alias", async (req, res) => {
 
     if (!link) return res.render("link/notFound", { username })
 
-    res.render("link/analytics", { username, link })
+    // Calculate the number of clicks and scans
+    let numClicks = 0, numScans = 0
+    for (let hit of link.hits) {
+        if (hit.type === "click") numClicks++
+        else if (hit.type === "scan") numScans++
+    }
+
+
+
+    res.render("link/analytics", { username, link, numClicks, numScans })
 })
 
 module.exports = linkRouter

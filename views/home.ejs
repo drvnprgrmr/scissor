@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('partials/headTags') %>
-    <title>Home</title>
-</head>
-<body>
-    <%- include('partials/header') %>
 
-    <main>
-        <h1>Welcom to Scissors</h1>
+    <head>
+        <%- include('partials/headTags') %>
+        <title>Home</title>
+    </head>
 
-        <a href="/link/create">Create</a>
-        <a href="/link/">Analytics</a>
-    </main>
-</body>
+    <body>
+        <%- include('partials/header') %>
+
+        <main>
+            <h2>Welcome back <span style="color: #ffea00;"><%= username %></span></h2>
+
+
+            <p>Links created: <%= totalLinks %></p>
+            <p>Total hits: <%= totalHits %></p>
+
+            <div>
+                <a href="/link/create">Create</a>
+                <a href="/link/">Analytics</a>
+            </div>
+        </main>
+    </body>
+
 </html>

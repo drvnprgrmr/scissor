@@ -32,7 +32,16 @@ const userSchema =  new Schema({
     links: [{
         type: Schema.Types.ObjectId,
         ref: "Link"
-    }]
+    }],
+
+    // Convenience helper to store the total number of hits
+    // all links have garnered
+    totalHits: {
+        type: Number,
+        required: true,
+        min: 0,
+        default: 0
+    }
 })
 
 

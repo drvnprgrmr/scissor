@@ -36,6 +36,7 @@ a:visited {
 }
 
 a:hover {
+  cursor: pointer;
   opacity: 0.5;
   transition: all .3s;
 }
@@ -49,18 +50,35 @@ header {
   border-bottom: solid;
 }
 
-header a {
-  padding: initial;
-  background-color: initial;
-}
 
 header h1 {
-  margin: .6rem 0;
+  margin: .6rem;
+}
+
+#header-link {
+  padding: initial;
+  background-color: initial;
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+#nav-links {
+  display: flex;
+}
+
+#nav-links a {
+  margin: 0 .5rem;
 }
 
 main {
   flex-grow: 1;
-  width: 50rem;
+  width: 60%;
+  min-width: 200px;
   margin: 0 auto;
 }
 
@@ -73,17 +91,18 @@ input {
 input[type=submit] {
   background-color: #ff7b00;
   color: white;
+  cursor: pointer;
 }
 
 
 form {
   margin: 0 auto;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 .form-field {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   margin: 1rem 0;
 }
 
@@ -106,13 +125,113 @@ ul {
   position: relative;
 }
 
-#profile:hover {
-  cursor: pointer;
-  opacity: 0.5;
-  transition: all .3s;
-}
 
 #profile-nav {
   display: none;
   position: absolute;
+}
+
+
+.account-links {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.account-links a {
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}
+
+
+/* Links */
+.link {
+  margin-bottom: 1rem;
+  padding: .5rem;
+  border-radius: .5rem;
+  border: 1px solid #ff7b00;
+}
+
+.link:hover {
+  background-color: #ff9500;
+}
+
+.link a {
+  padding: 0;
+  background-color: initial;
+}
+.link-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link-url {
+  display: flex;
+  align-items: center;
+  line-height: 1rem;
+}
+
+.link-url h5 {
+  margin-right: .5rem;
+}
+
+.link-alias {
+  display: flex;
+  align-items: center;
+}
+
+.link-alias span {
+  font-size: 20px;
+  margin-left: .5rem;
+  cursor: pointer;
+}
+
+.link-stat {
+  font-size: small;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  /* max-width: ; */
+}
+
+.link-stat p {
+  margin: 0;
+  margin-left: .5rem;
+}
+
+.link-stat span {
+  color: #ffea00;
+}
+
+
+/* Link details */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+}
+.l-details a {
+  padding: 0;
+  color: white;
+  background-color: inherit;
+}
+
+.l-details p {
+  font-size: small;
+}
+
+.l-details span {
+  color: #ffea00;
+}
+
+.clicks-and-scans {
+  display: flex;
+}
+
+.clicks-and-scans h4 {
+  margin-right: .5rem;
+  margin-top: 0;
+}
+
+@media screen and (max-width: 600px) {
+
 }
