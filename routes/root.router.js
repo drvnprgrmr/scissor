@@ -2,6 +2,7 @@ const router = require("express").Router()
 const axios = require("axios").default
 
 const authRouter = require("./auth.router")
+const userRouter = require("./user.router")
 const linkRouter = require("./link.router")
 
 const Link = require("../models/link")
@@ -10,37 +11,26 @@ const User = require("../models/user")
 const { isLoggedIn } = require("../middleware")
 
 
+// Home route
 router.get("/", (req, res) => {
     // Redirect the user if logged in
-    if (req.session.user) return res.redirect("/home")
+    if (req.session.user) return res.redirect("/u/home")
 
     // Display landing page
     res.render("index")
 })
 
-router.get("/home", isLoggedIn, async (req, res) => {
-    const { username } = req.session.user
-
-    // Grab logged in user
-    const { id } = req.session.user
-    const user = await User.findById(id).lean().exec()
-
-    // Get the user's number of links and total hits generated
-    const totalLinks = user.links.length
-    const totalHits = user.totalHits
-
-    // Send data back to the user
-    res.render("home", { username, totalLinks, totalHits })
-})
-
 // Handle auth routes
-router.use("/auth", authRouter)
+router.use("/a", authRouter)
+
+// Handle user routes
+router.use("/u", isLoggedIn, userRouter)
 
 // Handle link routes (requiring the user to be logged in)
-router.use("/link", isLoggedIn, linkRouter)
+router.use("/l", isLoggedIn, linkRouter)
 
 // Redirect short links
-router.get("/l/:alias", async (req, res) => {
+router.get("/:alias", async (req, res) => {
     const alias = req.params.alias
 
     // Detect if the `hit` came from a click or a scan

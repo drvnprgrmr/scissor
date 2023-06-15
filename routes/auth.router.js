@@ -34,7 +34,7 @@ authRouter.post("/signup", async (req, res) => {
         email: user.email
     }
 
-    res.redirect("/home")
+    res.redirect("/u/home")
 
 })
 
@@ -59,7 +59,7 @@ authRouter.post("/signin", async (req, res) => {
     }
 
     // Redirect the user to the home page
-    res.redirect("/home")
+    res.redirect("/u/home")
 })
 
 

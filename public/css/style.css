@@ -205,10 +205,23 @@ ul {
 
 
 /* Link details */
-.links {
+#link-sect {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
+.l-details {
+  position: relative;
+  max-width: 24rem;
+}
+
+.l-details .l-edit {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+}
+
 .l-details a {
   padding: 0;
   color: white;
@@ -230,6 +243,50 @@ ul {
 .clicks-and-scans h4 {
   margin-right: .5rem;
   margin-top: 0;
+}
+
+/* QR Code */
+#qrcode {
+  position: relative;
+  width: 9.25rem;
+  height: 9.25rem;
+}
+#qrcode-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#qrcode-info a {
+  display: none;
+}
+
+#qrcode-info:hover a {
+  display: initial;
+}
+
+#qrcode-info a:hover {
+  transition: none;
+  opacity: 1;
+}
+
+#qrcode-info img {
+  position: relative;
+  filter: blur(3px);
+}
+
+#qrcode-info p {
+  position: absolute;
+  width: 5rem;
+  color: #ff7b00;
+  font-weight: bolder;
+  text-align: center;
 }
 
 @media screen and (max-width: 600px) {

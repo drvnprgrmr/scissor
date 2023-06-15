@@ -10,9 +10,10 @@
         <%- include('../partials/header') %>
 
         <main>
-            <section class="links">
+            <section id="link-sect">
                 <div class="l-details">
-                    <h2 class="l-alias"><%= link.alias %></h2>
+                    <a href="/l/<%= link.alias %>/edit" class="l-edit"><span class="material-symbols-outlined">edit</span></a>
+                    <h2 class="l-alias" id="alias"><%= link.alias %></h2>
                     <% if (link.description) { %>
                     <p class="l-desc"><span>Description: </span><%= link.description %></p>
                     <% } else { %>
@@ -26,7 +27,17 @@
                     </p>
                     <p><span>Created at: </span> <%= link.createdAt %></p>
                 </div>
-                <div id="qrcode"></div>
+                <div id="qrcode">
+                    <% if (link.qr) { %>
+                        <img alt="QRCode Image" id="qrcode-img">
+                    <% } %>
+                    <div id="qrcode-info">
+                        <% if (!link.qr) { %>
+                            <img src="/images/dummy-qrcode.png" alt="dummy qrcode">
+                            <p>Update link to generate</p>
+                        <% } %>
+                    </div>
+                </div>
             </section>
 
             <section class="hits">
@@ -42,7 +53,9 @@
                     <% }) %>
                 </ul>
             </section>
+
         </main>
     </body>
 
+    <script src="/js/link.js"></script>
 </html>

@@ -1,5 +1,6 @@
 const linkRouter = require("express").Router()
 const randomstring = require("randomstring")
+const QRCode = require("qrcode")
 
 const User = require("../models/user")
 const Link = require("../models/link")
@@ -22,7 +23,9 @@ linkRouter.get("/create", (req, res) => {
 
 // Create a new link
 linkRouter.post("/create", async (req, res) => {
-    let { url, description, alias } = req.body
+    let { url, description, alias, qr } = req.body
+
+    if (qr === "on") qr = true
     
     // If user didn't create custom alias
     if (!alias) {
@@ -33,7 +36,7 @@ linkRouter.post("/create", async (req, res) => {
     }
 
     // Create a new link
-    const link = new Link({ url, description, alias })
+    const link = new Link({ url, description, alias, qr })
     
     
     // Grab logged in user
@@ -60,8 +63,22 @@ linkRouter.post("/create", async (req, res) => {
     // Update user
     await user.save()
 
-    // Redirect to link detail page
     res.redirect(link.alias)
+
+})
+
+
+// Create a QR Code
+linkRouter.get("/qr", (req, res) => {
+    const text = req.query.text
+
+    // Send QR code of text back
+    QRCode.toDataURL(text, (err, url) => {
+        if (err) console.error(err)
+        
+        // Send the data url
+        res.send(url)
+    })
 
 })
 
@@ -88,8 +105,12 @@ linkRouter.get("/:alias", async (req, res) => {
     }
 
 
-
     res.render("link/analytics", { username, link, numClicks, numScans })
+})
+
+// Edit a link
+linkRouter.get("/:alias/edit", async (req, res) => {
+    
 })
 
 module.exports = linkRouter

@@ -1,13 +1,24 @@
+require("dotenv").config()
+
 const express = require("express")
 const session = require("express-session")
 const rateLimit = require("express-rate-limit").default
 const helmet = require("helmet")
 const compression = require("compression")
-
+const RedisStore = require("connect-redis").default
 
 const router = require("./routes/root.router")
 const connectDB = require("./db")
+const redisClient = require("./redis")
 
+// Connect to redis
+redisClient.connect()
+
+// Create redis session store
+let redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "scissor-sessions:",
+})
 const app = express()
 
 // app.set("env", "production")
@@ -26,11 +37,16 @@ app.use(express.urlencoded({ extended: false }))
 
 // Initialize sessions
 app.use(session({
-    secret: 'keyboard cat',
+    name: "sessionID",
+    store: redisStore,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    //TODO Use redis session store
-    // cookie: { secure: true } // for production
+    rolling: true,  // Reset maxAge on update
+    cookie: {
+        maxAge: 7 * 86400000  // 7 days
+    }
+    // cookie: { secure: true } //! for production
 }))
 
 // Add rate limiting based on the IP

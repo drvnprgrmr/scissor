@@ -13,7 +13,7 @@
             <h2>Links</h2>
             <% if (!links.length) { %>
             <p>Sorry you haven't created any links yet</p>
-            <a href="/link/create">Create Link</a>
+            <a href="/l/create">Create Link</a>
             <% } else { %>
             <% links.forEach(link => { %>
                 
@@ -21,9 +21,9 @@
                         <div class="link-info">
                             <div class="link-alias">
                                 <h4 <% if (link.description) { %> title="<%= link.description %>" <% } %>> 
-                                    <a href="/link/<%= link.alias %>"> <%= link.alias %> </a>
+                                    <a href="/l/<%= link.alias %>"> <%= link.alias %> </a>
                                 </h4>
-                                <span class="material-symbols-outlined" title="Copy to Clipboard">content_copy</span>
+                                <span class="material-symbols-outlined" title="Copy Scissor link to Clipboard">content_copy</span>
                             </div>
                             <div class="link-url" title="<%= link.url %>">
                                 <h5>
