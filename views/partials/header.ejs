@@ -8,8 +8,9 @@
     <div id="profile">
         <span class="material-symbols-outlined">person</span>
         <ul id="profile-nav">
-            <li><%= username %></li>
-            <li><a href="/a/logout">Log out</a></li>
+            <li title="Manage your account"><a href="/u/account"><%= username %></a></li>
+            <li title="Logout"><a href="/a/logout" style="color: red;">Log out</a></li>
         </ul>
     </div>
 </header>
+<script src="/js/header.js"></script>

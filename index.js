@@ -44,7 +44,7 @@ app.use(session({
     saveUninitialized: false,
     rolling: true,  // Reset maxAge on update
     cookie: {
-        maxAge: 7 * 86400000  // 7 days
+        maxAge: 2 * 86400000  // 2 days
     }
     // cookie: { secure: true } //! for production
 }))

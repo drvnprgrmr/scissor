@@ -1,6 +1,9 @@
 const alias = document.getElementById("alias").textContent
+
 const qrcodeImg = document.getElementById("qrcode-img")
 const qrcodeInfo = document.getElementById("qrcode-info")
+
+const lEdit = document.getElementById("l-edit")
 
 if (qrcodeImg) {
     const text = `${location.origin}/${alias}?scan`
@@ -18,6 +21,7 @@ if (qrcodeImg) {
     const anchor = document.createElement("a")
     anchor.download = `${alias}-qrcode.png`
     anchor.href = qrcodeImg.src
+    anchor.title = "Download QR Code"
 
     anchor.appendChild(span)
 
