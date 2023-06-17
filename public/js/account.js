@@ -1,7 +1,7 @@
 const update = document.getElementById("update")
 const del = document.getElementById("delete")
 
-
+// Update account details
 update.addEventListener("submit", (ev) => {
     ev.preventDefault()
 
@@ -34,4 +34,32 @@ update.addEventListener("submit", (ev) => {
         }
     })
 
+})
+
+del.addEventListener("click", (ev) => {
+    const willDelete = confirm("Are you sure?\nAll links you've created will be deleted and the aliases will no longer work.")
+
+    if (!willDelete) return
+
+    //TODO: Send email for verification instead
+    // Prompt for password
+    const password = prompt("Enter your password to proceed")
+
+    if (!password) return alert("You didn't enter a password")
+
+    fetch("/u", {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ password })
+    }).then(
+        res => res.text()
+    ).then(err => {
+        if (err) alert(err)
+        else {
+            alert("Account deleted successfully!\nSorry to see you go. 😭😭")
+            location.pathname = "/"
+        }
+    })
 })

@@ -67,7 +67,6 @@ linkRouter.post("/create", async (req, res) => {
 
 })
 
-
 // Create a QR Code
 linkRouter.get("/qr", (req, res) => {
     const text = req.query.text
@@ -81,7 +80,6 @@ linkRouter.get("/qr", (req, res) => {
     })
 
 })
-
 
 // View details on a link
 linkRouter.get("/:alias", async (req, res) => {
@@ -104,13 +102,12 @@ linkRouter.get("/:alias", async (req, res) => {
         else if (hit.type === "scan") numScans++
     }
 
-
     res.render("link/analytics", { username, link, numClicks, numScans })
 })
 
 // Edit a link
 linkRouter.get("/:alias/edit", async (req, res) => {
-    
+    res.end()
 })
 
 module.exports = linkRouter

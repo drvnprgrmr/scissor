@@ -26,7 +26,7 @@ router.use("/a", authRouter)
 // Handle user routes
 router.use("/u", isLoggedIn, userRouter)
 
-// Handle link routes (requiring the user to be logged in)
+// Handle link routes
 router.use("/l", isLoggedIn, linkRouter)
 
 // Redirect short links

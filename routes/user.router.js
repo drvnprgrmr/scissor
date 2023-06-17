@@ -1,5 +1,6 @@
 const userRouter = require("express").Router()
 
+const Link = require("../models/link")
 const User = require("../models/user")
 
 // Get home page
@@ -54,6 +55,29 @@ userRouter.patch("/", async (req, res) => {
 
 // Delete account 
 userRouter.delete("/", async (req, res) => {
+    let err
+
+    const { id } = req.session.user
+    const {password } = req.body
+
+    const user = await User.findById(id).exec()
+
+    if (await user.validatePassword(password)) {
+        // Delete links associated with user
+        await Promise.all(user.links.map((linkId) => {
+            return Link.findByIdAndDelete(linkId).exec()
+        }))
+
+        // Delete user
+        await user.deleteOne()
+    }
+    else err = "Wrong password"
+
+    // Clear session
+    req.session.destroy((e) => {
+        if (e) console.error(e)
+        res.send(err)
+    })
 
 })
 

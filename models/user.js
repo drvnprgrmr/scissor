@@ -20,7 +20,7 @@ const userSchema =  new Schema({
             validator: isEmail
         }
     },
-    // // Track activated accounts
+    //TODO: Track activated accounts
     // isActivated: {
     //     type: Boolean,
     //     default: false

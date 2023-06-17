@@ -3,7 +3,7 @@ require("dotenv").config()
 const express = require("express")
 const session = require("express-session")
 const rateLimit = require("express-rate-limit").default
-const helmet = require("helmet")
+const helmet = require("helmet").default
 const compression = require("compression")
 const RedisStore = require("connect-redis").default
 
@@ -27,7 +27,14 @@ app.set("views", "views")
 
 
 // Set security headers
-app.use(helmet())
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            // Allow scripts from this source
+            scriptSrc: ["'self'", "https://unpkg.com"]
+        }
+    }
+}))
 
 // Compress responses 
 app.use(compression())

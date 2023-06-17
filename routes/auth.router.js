@@ -11,8 +11,8 @@ authRouter.get("/sign(in|up)", (req, res) => {
     res.render(`auth${req.path}`)
 })
 
+// Create a new account
 authRouter.post("/signup", async (req, res) => {
-    //TODO: Add client side validation for alphanumeric username
     const { username, email, password } = req.body
 
     // Create new user with given details
@@ -21,8 +21,7 @@ authRouter.post("/signup", async (req, res) => {
     try {
         await user.validate()
     } catch (err) {
-        console.error(err, err.message)
-        //TODO: Perform validation
+        return res.send(err)
     }
 
     await user.save()
@@ -38,8 +37,7 @@ authRouter.post("/signup", async (req, res) => {
 
 })
 
-
-// Signin the user
+// Login to user account
 authRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body
 
@@ -62,12 +60,12 @@ authRouter.post("/signin", async (req, res) => {
     res.redirect("/u/home")
 })
 
-
-
 // Logout a user
 authRouter.get('/logout', (req, res) => {
-    req.session.destroy()
-    res.redirect('/')
+    req.session.destroy((err) => {
+        if (err) console.error(err)
+        res.redirect('/')
+    })
 })
 
 module.exports = authRouter

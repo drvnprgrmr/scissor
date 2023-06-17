@@ -8,11 +8,11 @@
         <%- include('../partials/headerPlain') %>
 
         <main>
-            <form method="post">
+            <form id="form" method="post">
                 <h2>Create a new account</h2>
                 <div class="form-field">
                     <label for="field-username">Username</label>
-                    <input type="text" name="username" id="field-username" />
+                    <input type="text" name="username" id="field-username" autofocus/>
                 </div>
 
                 <div class="form-field">
@@ -41,4 +41,7 @@
             </form>
         </main>
     </body>
+
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+    <script src="/js/signup.js"></script>
 </html>
