@@ -18,6 +18,10 @@ authRouter.post("/signup", async (req, res) => {
     // Create new user with given details
     const user = new User({ username, email, password })
 
+    // Check if user with that email already exists
+    const userExists = await User.findOne({ email }).exec()
+    if (userExists) return res.status(409).send("Sorry a user with that email already exists")
+
     try {
         await user.validate()
     } catch (err) {
