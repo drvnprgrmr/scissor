@@ -22,7 +22,7 @@ form.addEventListener("submit", (ev) => {
     }
 
     // Alias validation
-    if (!validator.isAlphanumeric(aliasField.value)) {
+    if (aliasField.value && !validator.isAlphanumeric(aliasField.value)) {
         alert("Alias must only contain alphanumeric characters");
         return aliasField.focus();
     }
