@@ -2,7 +2,7 @@
 <!-- - Implement qrcode generation and download ! -->
 <!-- - Work on user profile icon and account management -->
 <!-- - Use alerts instead for flash messages -->
-- Detail link hits
+<!-- - Detail link hits -->
 - Sort list view of links (date and hits)
     Use location API to change sort without reloading
 

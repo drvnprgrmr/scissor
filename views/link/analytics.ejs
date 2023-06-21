@@ -13,7 +13,10 @@
             <section id="link-sect">
                 <div class="l-details">
                     <a href="/l/<%= link.alias %>/edit" class="l-edit"><span class="material-symbols-outlined">edit</span></a>
-                    <h2 class="l-alias" id="alias"><%= link.alias %></h2>
+                    <h2 class="l-alias" id="alias">
+                        <%= link.alias %>
+                        <span id="copy" class="material-symbols-outlined" title="Copy link to Clipboard">content_copy</span>
+                    </h2>
                     <% if (link.description) { %>
                     <p class="l-desc"><span>Description: </span><%= link.description %></p>
                     <% } else { %>
@@ -40,16 +43,25 @@
                 </div>
             </section>
 
-            <section class="hits">
+            <section id="hits">
                 <h3>Hits: <%= link.hits.length %></h3>
                 <div class="clicks-and-scans">
                     <h4>Clicks: <%= numClicks %></h4>
                     <h4>Scans: <%= numScans %></h4>
                 </div>
                 <ul id="hit-list">
-                    <% link.hits.forEach(hit => { %>
+                    <% link.hits.forEach((hit, i) => { %>
                     <li class="hit">
-                        <h5> <%= hit %> </h5>
+                        <div># <%= i + 1 %></div>
+                        <ul>
+                            <p><%= hit.date.toLocaleString("en-US", { timeStyle: "short", dateStyle: "long" }) %></p>
+                            <li><span>Type:</span> <%= hit.type %></li>
+                            <li><span>IP:</span> <%= hit.ip %></li>
+                            <li><span>Referrer:</span> <%= hit.referrer %></li>
+                            <li><span>Location:</span> <%= hit.country %>/<%= hit.city %></li>
+                            <li><span>TZ:</span> <%= hit.timezone %></li>
+                            <li><span>ISP:</span> <%= hit.isp %></li>
+                        </ul>
                         
                     </li>
                     <!-- TODO: Detail hit structure -->
@@ -60,5 +72,5 @@
         </main>
     </body>
 
-    <script src="/js/link.js"></script>
+    <script src="/js/link/analytics.js"></script>
 </html>

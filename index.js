@@ -51,15 +51,15 @@ app.use(session({
     saveUninitialized: false,
     rolling: true,  // Reset maxAge on update
     cookie: {
-        maxAge: 2 * 86400000  // 2 days
+        maxAge: 7 * 86400000,
+        secure: (process.env.NODE_ENV === "production" ? true : false) 
     }
-    // cookie: { secure: true } //! for production
 }))
 
 // Add rate limiting based on the IP
 app.use(rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 150,
     standardHeaders: true, 
     legacyHeaders: false,
     //TODO Use redis session store

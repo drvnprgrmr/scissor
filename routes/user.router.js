@@ -55,8 +55,6 @@ userRouter.patch("/", async (req, res) => {
 
 // Delete account 
 userRouter.delete("/", async (req, res) => {
-    let err
-
     const { id } = req.session.user
     const {password } = req.body
 
@@ -70,14 +68,13 @@ userRouter.delete("/", async (req, res) => {
 
         // Delete user
         await user.deleteOne()
-    }
-    else err = "Wrong password"
 
-    // Clear session
-    req.session.destroy((e) => {
-        if (e) console.error(e)
-        res.send(err)
-    })
+        // Clear session
+        req.session.destroy()
+        res.end()
+    }
+    else res.send("Wrong password")
+
 
 })
 

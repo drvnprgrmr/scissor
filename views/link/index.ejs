@@ -15,40 +15,40 @@
             <p>Sorry you haven't created any links yet</p>
             <a href="/l/create">Create Link</a>
             <% } else { %>
-            <% links.forEach(link => { %>
-                
-                    <div class="link">
-                        <div class="link-info">
-                            <div class="link-alias">
-                                <h4 <% if (link.description) { %> title="<%= link.description %>" <% } %>> 
-                                    <a href="/l/<%= link.alias %>"> <%= link.alias %> </a>
-                                </h4>
-                                <span id="copy1" class="material-symbols-outlined" title="Copy Scissor link to Clipboard">content_copy</span>
-                            </div>
-                            <div class="link-url" title="<%= link.url %>">
-                                <h5>
-                                    Link URL
-                                </h5>
-                                <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
-                                    <span class="material-symbols-outlined">link</span>
-                                </a>
-                            </div>
+            <ul id="link-list">
+                <% links.forEach((link, i) => { %>              
+                <li class="link">
+                    <div class="link-info">
+                        <div class="link-alias">
+                            <h4 <% if (link.description) { %> title="<%= link.description %>" <% } %>> 
+                                <a href="/l/<%= link.alias %>" id="alias-<%= i %>"><%= link.alias %></a>
+                            </h4>
+                            <span id="copy-<%= i %>" class="material-symbols-outlined" title="Copy link to Clipboard">content_copy</span>
                         </div>
-                        <div class="link-stat">
-                            <p>Hits: <span><%= link.hits.length %></span></p>
-                            <p>Created:
-                                <span><%= link.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: 'short'}) %></span>
-                            </p>
+                        <div class="link-url" title="<%= link.url %>">
+                            <h5>
+                                Link URL
+                            </h5>
+                            <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
+                                <span class="material-symbols-outlined">link</span>
+                            </a>
                         </div>
                     </div>
-        
-            <% })%>
+                    <div class="link-stat">
+                        <p>Hits: <span><%= link.hits.length %></span></p>
+                        <p>Created:
+                            <span><%= link.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: 'short'}) %></span>
+                        </p>
+                    </div>
+                </li>
+                <% })%>
+            </ul>
 
             <% } %>
 
         </main>
     </body>
 
-    <script src="/js/link.js"></script>
+    <script src="/js/link/index.js"></script>
 
 </html>

@@ -1,10 +1,9 @@
-const alias = document.getElementById("alias").textContent
+const alias = document.getElementById("alias").innerText.split(" ")[0]
 
 const qrcodeImg = document.getElementById("qrcode-img")
 const qrcodeInfo = document.getElementById("qrcode-info")
 
-const copyBtn = document.getElementById("copy") 
-const copyContent = document.getElementById("copy-content")
+const copy = document.getElementById("copy") 
 
 if (qrcodeImg) {
     const text = `${location.origin}/${alias}?scan`
@@ -30,8 +29,10 @@ if (qrcodeImg) {
 
 }
 
-copyBtn.addEventListener("click", (ev) => {
-    
+copy.addEventListener("click", (ev) => {
+    const toCopy = `${location.origin}/${alias}`
+    navigator.clipboard.writeText(toCopy)
+    alert("Link Copied to clipboard")
 })
 
 
