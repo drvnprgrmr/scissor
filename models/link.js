@@ -33,7 +33,6 @@ const linkSchema = new Schema({
         }
     },
     description: String,  // Optional description of link
-    qr: Boolean,  // Whether or not the user generated a qr code
     alias: {
         type: String,
         required: true,

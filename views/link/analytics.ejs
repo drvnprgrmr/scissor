@@ -12,7 +12,6 @@
         <main>
             <section id="link-sect">
                 <div class="l-details">
-                    <a href="/l/<%= link.alias %>/edit" class="l-edit"><span class="material-symbols-outlined">edit</span></a>
                     <h2 class="l-alias" id="alias">
                         <%= link.alias %>
                         <span id="copy" class="material-symbols-outlined" title="Copy link to Clipboard">content_copy</span>
@@ -31,14 +30,8 @@
                     <p><span>Created at: </span> <%= link.createdAt %></p>
                 </div>
                 <div id="qrcode">
-                    <% if (link.qr) { %>
-                        <img alt="QRCode Image" id="qrcode-img">
-                    <% } %>
+                    <img alt="QRCode Image" id="qrcode-img">
                     <div id="qrcode-info">
-                        <% if (!link.qr) { %>
-                            <img src="/images/dummy-qrcode.png" alt="dummy qrcode">
-                            <p>Update link to generate</p>
-                        <% } %>
                     </div>
                 </div>
             </section>
@@ -64,7 +57,6 @@
                         </ul>
                         
                     </li>
-                    <!-- TODO: Detail hit structure -->
                     <% }) %>
                 </ul>
             </section>

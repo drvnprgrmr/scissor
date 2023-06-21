@@ -3,11 +3,12 @@
 <!-- - Work on user profile icon and account management -->
 <!-- - Use alerts instead for flash messages -->
 <!-- - Detail link hits -->
-- Sort list view of links (date and hits)
-    Use location API to change sort without reloading
-
 
 <!-- - Validation -->
 - Typescript & Caching
 - Write Unit and Integration tests
 - Write documentation (readme and OpenAPI)
+
+
+<!-- ? Additional features -->
+- Register new accounts via emails

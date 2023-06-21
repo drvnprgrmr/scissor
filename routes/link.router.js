@@ -24,8 +24,6 @@ linkRouter.get("/create", (req, res) => {
 // Create a new link
 linkRouter.post("/create", async (req, res) => {
     let { url, description, alias, qr } = req.body
-
-    if (qr === "on") qr = true
     
     // If user didn't create custom alias
     if (!alias) {
@@ -36,7 +34,7 @@ linkRouter.post("/create", async (req, res) => {
     }
 
     // Create a new link
-    const link = new Link({ url, description, alias, qr })
+    const link = new Link({ url, description, alias })
     
     
     // Grab logged in user
@@ -50,8 +48,7 @@ linkRouter.post("/create", async (req, res) => {
     try {
         await link.validate()
     } catch (err) {
-        console.error(err)
-        //TODO: Perform validation
+        return res.send(err)
     }
 
     // Save the link
@@ -105,9 +102,6 @@ linkRouter.get("/:alias", async (req, res) => {
     res.render("link/analytics", { username, link, numClicks, numScans })
 })
 
-// Edit a link
-linkRouter.get("/:alias/edit", async (req, res) => {
-    res.end()
-})
+
 
 module.exports = linkRouter

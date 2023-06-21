@@ -11,9 +11,6 @@ const router = require("./routes/root.router")
 const connectDB = require("./db")
 const redisClient = require("./redis")
 
-// Connect to redis
-redisClient.connect()
-
 // Create redis session store
 let redisStore = new RedisStore({
     client: redisClient,
@@ -74,9 +71,7 @@ app.use(router)
 
 // Handle unknown routes
 app.use((req, res, next) => {
-    res.status(404).render("404", { 
-        username: req.session.user?.username
-    })
+    res.status(404).render("404")
     next()
 })
 
@@ -89,10 +84,13 @@ app.use((err, req, res, next) => {
     })
 })
 
-
 const port = process.env.PORT || 8080
 
 app.listen(port, () => {
+    // Connect to redis
+    redisClient.connect()
+
+    // Connect to MongoDB
     connectDB()
     console.log(`App is listening on http://localhost:${port}`)
     

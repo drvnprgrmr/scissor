@@ -8,4 +8,6 @@ linkList.addEventListener("click", (ev) => {
         navigator.clipboard.writeText(toCopy)
         alert("Link Copied to clipboard")
     }
+
+    console.log(ev.target)
 })
