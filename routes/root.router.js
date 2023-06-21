@@ -56,7 +56,7 @@ router.get("/:alias", async (req, res) => {
     const referrer = req.headers.referer
 
     // Get info of the user based on their IP
-    const { data } = await axios.get(`http://ip-api.com/json/${ip}?fields=785`)
+    const { data } = await axios.get(`http://ip-api.com/json/${ip}?fields=2321`)
     
     // Push `hit` to the link
     link.hits.push({

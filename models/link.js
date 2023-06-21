@@ -21,7 +21,7 @@ const hitSchema = new Schema({
     country: String,
     city: String,
     timezone: String,
-    isp: String
+    as: String  // ISP
 })
 
 const linkSchema = new Schema({
