@@ -46,7 +46,7 @@
                     <li class="hit">
                         <div># <%= i + 1 %></div>
                         <ul>
-                            <p><%= hit.date.toLocaleString("en-US", { timeStyle: "short", dateStyle: "long" }) %></p>
+                            <p><%= hit.createdAt.toLocaleString("en-US", { timeStyle: "short", dateStyle: "long" }) %></p>
                             <li><span>Type:</span> <%= hit.type %></li>
                             <li><span>IP:</span> <%= hit.ip %></li>
                             <li><span>Referrer:</span> <%= hit.referrer %></li>

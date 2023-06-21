@@ -8,11 +8,6 @@ const hitSchema = new Schema({
         enum: ["click", "scan"],
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now,
-        immutable: true
-    },
     // From browser
     ip: String,
     referrer: String,
@@ -22,6 +17,8 @@ const hitSchema = new Schema({
     city: String,
     timezone: String,
     as: String  // ISP
+}, {
+    timestamps: { createdAt: true, updatedAt: false }
 })
 
 const linkSchema = new Schema({
