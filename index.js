@@ -18,9 +18,10 @@ let redisStore = new RedisStore({
 })
 const app = express()
 
-// app.set("env", "production")
+
 app.set("view engine", "ejs")
 app.set("views", "views")
+app.set("trust proxy", true)
 
 
 // Set security headers

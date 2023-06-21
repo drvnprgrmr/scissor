@@ -52,7 +52,7 @@ router.get("/:alias", async (req, res) => {
 
 
     // Grab the IP address and referrer from the request
-    const ip = req.socket.remoteAddress
+    const ip = req.ip
     const referrer = req.headers.referer
 
     // Get info of the user based on their IP

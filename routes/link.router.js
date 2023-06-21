@@ -33,6 +33,10 @@ linkRouter.post("/create", async (req, res) => {
         })
     }
 
+    // Check to see if link exists
+    const linkExists = await Link.findOne({ alias }).exec()
+    if (linkExists) return res.status(409).send(`Sorry, the alias (${alias}) has already been used`)
+
     // Create a new link
     const link = new Link({ url, description, alias })
     

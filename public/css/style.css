@@ -182,6 +182,9 @@ ul {
 }
 
 /* Links */
+#link-list {
+    max-height: 100%;
+}
 .link {
     margin-bottom: 1rem;
     padding: 0.5rem;
