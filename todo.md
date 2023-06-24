@@ -12,3 +12,4 @@
 
 <!-- ? Additional features -->
 - Register new accounts via emails
+- Add ability to edit URLs aliases point to

@@ -23,7 +23,7 @@ linkRouter.get("/create", (req, res) => {
 
 // Create a new link
 linkRouter.post("/create", async (req, res) => {
-    let { url, description, alias, qr } = req.body
+    let { url, description, alias } = req.body
     
     // If user didn't create custom alias
     if (!alias) {
