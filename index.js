@@ -5,17 +5,25 @@ const session = require("express-session")
 const rateLimit = require("express-rate-limit").default
 const helmet = require("helmet").default
 const compression = require("compression")
-const RedisStore = require("connect-redis").default
+
+const RedisSessionStore = require("connect-redis").default
+const RedisLimitStore = require("rate-limit-redis").default
 
 const router = require("./routes/root.router")
 const connectDB = require("./db")
 const redisClient = require("./redis")
 
 // Create redis session store
-let redisStore = new RedisStore({
+let sessionStore = new RedisSessionStore({
     client: redisClient,
     prefix: "scissor-sessions:",
 })
+
+// Create rate limit store
+const limitStore = new RedisLimitStore({
+    sendCommand: (...args) => redisClient.sendCommand(args),
+})
+
 const app = express()
 
 
@@ -43,13 +51,13 @@ app.use(express.urlencoded({ extended: false }))
 // Initialize sessions
 app.use(session({
     name: "sessionID",
-    store: redisStore,
+    store: sessionStore,
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     rolling: true,  // Reset maxAge on update
     cookie: {
-        maxAge: 7 * 86400000,
+        maxAge: 7 * 86400000,  // 7 days
         secure: (process.env.NODE_ENV === "production" ? true : false) 
     }
 }))
@@ -57,10 +65,10 @@ app.use(session({
 // Add rate limiting based on the IP
 app.use(rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 150,
+    max: 100,
     standardHeaders: true, 
     legacyHeaders: false,
-    //TODO Use redis session store
+    store: limitStore
 }))
 
 // Serve static assets

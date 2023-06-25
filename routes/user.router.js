@@ -42,7 +42,6 @@ userRouter.patch("/", async (req, res) => {
             user.password = passwordNew
         } else if ( passwordNew !== passwordRepeat) err = "Passwords do not match"
 
-        //TODO Mongoose validation
         if (!err) {
             await user.save()
             if (user.username !== username) req.session.user.username = username
