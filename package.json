@@ -2,11 +2,13 @@
   "name": "scissor",
   "description": "An application to make working with and handling links easier",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "type": "module",
   "scripts": {
     "test": "mocha",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node ./dist/index.js",
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -37,8 +39,13 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.3.1",
     "dotenv-vault": "^1.23.3",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
+    "supertest": "^6.3.3",
     "typescript": "^5.0.4"
   }
 }

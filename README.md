@@ -32,5 +32,5 @@ These are the details of each `hit`:
 
 
 
-## Tests
-**NOTE:** Before running any of the tests make sure you have a local mongodb server running.
+<!-- ## Tests
+**NOTE:** Before running any of the tests make sure you have a local mongodb server running. -->

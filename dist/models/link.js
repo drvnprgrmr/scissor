@@ -1,7 +1,5 @@
-const { Schema, model } = require("mongoose")
-const { isURL } = require("validator").default
-
-
+const { Schema, model } = require("mongoose");
+const { isURL } = require("validator").default;
 const hitSchema = new Schema({
     type: {
         type: String,
@@ -11,16 +9,14 @@ const hitSchema = new Schema({
     // From browser
     ip: String,
     referrer: String,
-
     // External IP API
     country: String,
     city: String,
     timezone: String,
-    as: String  // ISP
+    as: String // ISP
 }, {
     timestamps: { createdAt: true, updatedAt: false }
-})
-
+});
 const linkSchema = new Schema({
     url: {
         type: String,
@@ -29,11 +25,11 @@ const linkSchema = new Schema({
             validator: isURL
         }
     },
-    description: String,  // Optional description of link
+    description: String,
     alias: {
         type: String,
         required: true,
-        unique: true,  // Create a unique index
+        unique: true,
         immutable: true,
     },
     createdBy: {
@@ -41,12 +37,7 @@ const linkSchema = new Schema({
         ref: "User",
         required: true
     },
-    hits: [hitSchema]  // Store information on all hits
-
-}, { timestamps: true })
-
-
-const Link = model("Link", linkSchema)
-
-
-module.exports = Link
+    hits: [hitSchema] // Store information on all hits
+}, { timestamps: true });
+const Link = model("Link", linkSchema);
+module.exports = Link;

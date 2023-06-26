@@ -1,9 +1,7 @@
-const { Schema, model } = require("mongoose")
-const bcrypt = require("bcrypt")
-const { isEmail } = require("validator").default
-
-
-const userSchema =  new Schema({
+const { Schema, model } = require("mongoose");
+const bcrypt = require("bcrypt");
+const { isEmail } = require("validator").default;
+const userSchema = new Schema({
     username: {
         type: String,
         required: true,
@@ -30,10 +28,9 @@ const userSchema =  new Schema({
         required: true
     },
     links: [{
-        type: Schema.Types.ObjectId,
-        ref: "Link"
-    }],
-
+            type: Schema.Types.ObjectId,
+            ref: "Link"
+        }],
     // Convenience helper to store the total number of hits
     // all links have garnered
     totalHits: {
@@ -42,29 +39,21 @@ const userSchema =  new Schema({
         min: 0,
         default: 0
     }
-})
-
-
+});
 // Hash passwords
 userSchema.pre("save", async function (next) {
     // Only run this function if password was actually modified (or is new)
-    if (!this.isModified('password')) return next();
-
+    if (!this.isModified('password'))
+        return next();
     // Hash password and save it
     this.password = await bcrypt.hash(this.password, 10);
-
-    next()
-})
-
+    next();
+});
 userSchema.method("validatePassword", async function (password) {
     // Compare to check if the password is valid
-    const isValid = await bcrypt.compare(password, this.password)
-
+    const isValid = await bcrypt.compare(password, this.password);
     // Return the result
-    return isValid
-})
-
-
-const User = model("User", userSchema)
-
-module.exports = User
+    return isValid;
+});
+const User = model("User", userSchema);
+module.exports = User;
