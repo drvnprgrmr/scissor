@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -37,6 +37,7 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "dotenv-vault": "^1.23.3",
     "nodemon": "^2.0.22",
     "typescript": "^5.0.4"
   }

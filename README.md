@@ -30,3 +30,7 @@ These are the details of each `hit`:
 - Location (country and city) of `hit`
 - Internet Service Provider of the `hit`
 
+
+
+## Tests
+**NOTE:** Before running any of the tests make sure you have a local mongodb server running.

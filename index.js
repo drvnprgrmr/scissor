@@ -1,98 +1,119 @@
-require("dotenv").config()
+require("dotenv").config();
 
-const express = require("express")
-const session = require("express-session")
-const rateLimit = require("express-rate-limit").default
-const helmet = require("helmet").default
-const compression = require("compression")
-const RedisStore = require("connect-redis").default
+const express = require("express");
+const session = require("express-session");
+const rateLimit = require("express-rate-limit").default;
+const helmet = require("helmet").default;
+const compression = require("compression");
 
-const router = require("./routes/root.router")
-const connectDB = require("./db")
-const redisClient = require("./redis")
+const RedisSessionStore = require("connect-redis").default;
+const LimitSessionStore = require("rate-limit-redis").default;
+
+const router = require("./routes/root.router");
+const connectDB = require("./db");
+const redisClient = require("./redis");
+
+// Check if we're in a production environment or not
+const isProd = process.env.NODE_ENV?.match(/production/i);
+// Set the port number
+const port = process.env.PORT || 8080;
+
+(async () => {
+    // Connect to redis
+    await redisClient.connect();
+
+    // Connect to MongoDB
+    await connectDB();
+})();
 
 // Create redis session store
-let redisStore = new RedisStore({
+const sessionStore = new RedisSessionStore({
     client: redisClient,
     prefix: "scissor-sessions:",
-})
-const app = express()
+});
+
+// Create rate limit store
+const limitStore = new LimitSessionStore({
+    prefix: "scissor-ratelimit:",
+    sendCommand: (...args) => redisClient.sendCommand(args),
+});
 
 
-app.set("view engine", "ejs")
-app.set("views", "views")
-app.set("trust proxy", true)
 
+// Create express app
+const app = express();
+
+app.set("view engine", "ejs");
+app.set("views", "views");
+app.set("trust proxy", true);
 
 // Set security headers
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            // Allow scripts from this source
-            scriptSrc: ["'self'", "https://unpkg.com"]
-        }
-    }
-}))
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                // Allow scripts from this source
+                scriptSrc: ["'self'", "https://unpkg.com"],
+            },
+        },
+    })
+);
 
-// Compress responses 
-app.use(compression())
+// Compress responses
+app.use(compression());
 
 // Process submitted forms
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 
 // Initialize sessions
-app.use(session({
-    name: "sessionID",
-    store: redisStore,
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,  // Reset maxAge on update
-    cookie: {
-        maxAge: 7 * 86400000,
-        secure: (process.env.NODE_ENV === "production" ? true : false) 
-    }
-}))
+app.use(
+    session({
+        name: "sessionID",
+        store: sessionStore,
+        secret: process.env.SESSION_SECRET || "secret",
+        resave: false,
+        saveUninitialized: false,
+        rolling: true, // Reset maxAge on update
+        cookie: {
+            maxAge: 7 * 86400000, // 7 days
+            secure: isProd ? true : false,
+        },
+    })
+);
 
 // Add rate limiting based on the IP
-app.use(rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 150,
-    standardHeaders: true, 
-    legacyHeaders: false,
-    //TODO Use redis session store
-}))
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 150,
+        standardHeaders: true,
+        legacyHeaders: false,
+        store: limitStore,
+    })
+);
 
 // Serve static assets
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 // Use the apps routes
-app.use(router)
-
+app.use(router);
 
 // Handle unknown routes
 app.use((req, res, next) => {
-    res.status(404).render("404")
-    next()
-})
+    res.status(404).render("404");
+    next();
+});
 
 // Error handler
 app.use((err, req, res, next) => {
-    console.error(err)
+    console.error(err);
     res.status(err.status || 500).send({
         message: "An error occured. Oops!",
-        error: err.message
-    })
-})
+        error: err.message,
+    });
+});
 
-const port = process.env.PORT || 8080
 
 app.listen(port, () => {
-    // Connect to redis
-    redisClient.connect()
-
-    // Connect to MongoDB
-    connectDB()
-    console.log(`App is listening on http://localhost:${port}`)
-    
-})
+    console.log(`App is listening on http://localhost:${port}`);
+});
