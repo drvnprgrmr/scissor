@@ -1,16 +1,14 @@
-require("dotenv").config();
+import dotenv from "dotenv"
+dotenv.config({ path: "../.env" })
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-const connectDB = async function (uri) {
+async function connectDB(uri) {
     await mongoose.connect(
         MONGODB_URI || uri || "mongodb://localhost:27017/scissor",
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }
+
     ).then(() => {
         console.log("Connected to MongoDB successfully");
 
@@ -21,4 +19,4 @@ const connectDB = async function (uri) {
 
 };
 
-module.exports = connectDB;
+export default connectDB;

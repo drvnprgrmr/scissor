@@ -3,8 +3,4 @@ function isLoggedIn(req, res, next) {
     next()
 }
 
-
-
-export {
-    isLoggedIn
-}
+export default isLoggedIn

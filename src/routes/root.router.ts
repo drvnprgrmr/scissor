@@ -1,18 +1,19 @@
-const router = require("express").Router()
-const axios = require("axios").default
+import { Router } from "express"
+import axios from "axios"
 
-const authRouter = require("./auth.router")
-const userRouter = require("./user.router")
-const linkRouter = require("./link.router")
+import authRouter from "./auth.router"
+import userRouter from "./user.router"
+import linkRouter from "./link.router"
 
-const Link = require("../models/link")
-const User = require("../models/user")
+import Link from "../models/link"
+import User from "../models/user"
 
-const { isLoggedIn } = require("../middleware")
+import { isLoggedIn } from "../middleware"
 
+const rootRouter = Router()
 
 // Home route
-router.get("/", (req, res) => {
+rootRouter.get("/", (req, res) => {
     // Redirect the user if logged in
     if (req.session.user) return res.redirect("/u/home")
 
@@ -21,16 +22,16 @@ router.get("/", (req, res) => {
 })
 
 // Handle auth routes
-router.use("/a", authRouter)
+rootRouter.use("/a", authRouter)
 
 // Handle user routes
-router.use("/u", isLoggedIn, userRouter)
+rootRouter.use("/u", isLoggedIn, userRouter)
 
 // Handle link routes
-router.use("/l", isLoggedIn, linkRouter)
+rootRouter.use("/l", isLoggedIn, linkRouter)
 
 // Redirect short links
-router.get("/:alias", async (req, res) => {
+rootRouter.get("/:alias", async (req, res) => {
     const alias = req.params.alias
 
     // Detect if the `hit` came from a click or a scan
@@ -73,4 +74,4 @@ router.get("/:alias", async (req, res) => {
 })
 
 // Export the root router
-module.exports = router
+export default rootRouter

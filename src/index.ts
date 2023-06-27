@@ -10,7 +10,7 @@ import compression from "compression";
 import RedisSessionStore from "connect-redis";
 import LimitSessionStore from "rate-limit-redis";
 
-import router from "./routes/root.router";
+import rootRouter from "./routes/root.router";
 import connectDB from "./db";
 import redisClient from "./redis";
 
@@ -97,7 +97,7 @@ app.use(
 app.use(express.static("public"));
 
 // Use the apps routes
-app.use(router);
+app.use(rootRouter);
 
 // Handle unknown routes
 app.use((req, res, next) => {

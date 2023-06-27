@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose")
-const bcrypt = require("bcrypt")
-const { isEmail } = require("validator").default
+import { Schema, model } from "mongoose"
+import bcrypt from "bcrypt"
+import { isEmail }  from "validator"
 
 
 const userSchema =  new Schema({

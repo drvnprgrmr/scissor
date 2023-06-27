@@ -1,6 +1,5 @@
-const { Schema, model } = require("mongoose")
-const { isURL } = require("validator").default
-
+import { Schema, model } from "mongoose"
+import { isURL } from "validator"
 
 const hitSchema = new Schema({
     type: {

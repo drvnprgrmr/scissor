@@ -1,7 +1,9 @@
-const userRouter = require("express").Router()
+import { Router } from "express"
 
-const Link = require("../models/link")
-const User = require("../models/user")
+import Link from "../models/link"
+import User from "../models/user"
+
+const userRouter = Router()
 
 // Get home page
 userRouter.get("/home", async (req, res) => {
@@ -77,4 +79,4 @@ userRouter.delete("/", async (req, res) => {
 
 })
 
-module.exports = userRouter
+export default userRouter

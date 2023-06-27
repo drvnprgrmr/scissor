@@ -1,10 +1,13 @@
-const linkRouter = require("express").Router()
-const randomstring = require("randomstring")
-const QRCode = require("qrcode")
+import { Router } from "express"
 
-const User = require("../models/user")
-const Link = require("../models/link")
+import randomstring from "randomstring"
+import QRCode from "qrcode"
 
+import User from "../models/user"
+import Link from "../models/link"
+
+
+const linkRouter = Router()
 
 linkRouter.get("/", async (req, res) => {
     // Get the logged in user
@@ -108,4 +111,4 @@ linkRouter.get("/:alias", async (req, res) => {
 
 
 
-module.exports = linkRouter
+export default linkRouter

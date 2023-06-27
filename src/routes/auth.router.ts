@@ -1,7 +1,8 @@
-const authRouter = require("express").Router()
+import { Router } from "express"
 
-const User = require("../models/user")
+import User from "../models/user"
 
+const authRouter = Router()
 
 // Handle both signin and signup GET requests
 authRouter.get("/sign(in|up)", (req, res) => {
@@ -72,4 +73,4 @@ authRouter.get('/logout', (req, res) => {
     })
 })
 
-module.exports = authRouter
+export default authRouter
