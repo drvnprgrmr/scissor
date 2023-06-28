@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, Request, Response } from "express"
 import axios from "axios"
 
 import authRouter from "./auth.router"
@@ -8,12 +8,12 @@ import linkRouter from "./link.router"
 import Link from "../models/link"
 import User from "../models/user"
 
-import { isLoggedIn } from "../middleware"
+import isLoggedIn from "../middleware"
 
 const rootRouter = Router()
 
 // Home route
-rootRouter.get("/", (req, res) => {
+rootRouter.get("/", (req: Request, res: Response) => {
     // Redirect the user if logged in
     if (req.session.user) return res.redirect("/u/home")
 
@@ -31,7 +31,7 @@ rootRouter.use("/u", isLoggedIn, userRouter)
 rootRouter.use("/l", isLoggedIn, linkRouter)
 
 // Redirect short links
-rootRouter.get("/:alias", async (req, res) => {
+rootRouter.get("/:alias", async (req: Request, res: Response) => {
     const alias = req.params.alias
 
     // Detect if the `hit` came from a click or a scan

@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config({ path: "../.env" })
 
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -13,6 +13,13 @@ import LimitSessionStore from "rate-limit-redis";
 import rootRouter from "./routes/root.router";
 import connectDB from "./db";
 import redisClient from "./redis";
+
+// Fix issues with req.session.user
+declare module 'express-session' {
+    export interface SessionData {
+      user: { [key: string]: any };
+    }
+  }
 
 // Check if we're in a production environment or not
 const isProd = process.env.NODE_ENV?.match(/production/i);
@@ -100,13 +107,13 @@ app.use(express.static("public"));
 app.use(rootRouter);
 
 // Handle unknown routes
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).render("404");
     next();
 });
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use((err, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
     res.status(err.status || 500).send({
         message: "An error occured. Oops!",

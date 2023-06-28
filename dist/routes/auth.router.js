@@ -1,5 +1,11 @@
-const authRouter = require("express").Router();
-const User = require("../models/user");
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_1 = __importDefault(require("../models/user"));
+const authRouter = (0, express_1.Router)();
 // Handle both signin and signup GET requests
 authRouter.get("/sign(in|up)", (req, res) => {
     // Check if user is already signed in
@@ -11,9 +17,9 @@ authRouter.get("/sign(in|up)", (req, res) => {
 authRouter.post("/signup", async (req, res) => {
     const { username, email, password } = req.body;
     // Create new user with given details
-    const user = new User({ username, email, password });
+    const user = new user_1.default({ username, email, password });
     // Check if user with that email already exists
-    const userExists = await User.findOne({ email }).exec();
+    const userExists = await user_1.default.findOne({ email }).exec();
     if (userExists)
         return res.status(409).send("Sorry a user with that email already exists");
     try {
@@ -34,11 +40,12 @@ authRouter.post("/signup", async (req, res) => {
 // Login to user account
 authRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email }).exec();
+    const user = await user_1.default.findOne({ email }).exec();
     // User not found
     if (!user)
         return res.status(404).send("Sorry that user does not exist");
     // Invalid password
+    // @ts-ignore
     if (!await user.validatePassword(password))
         return res.status(401).send("Wrong password");
     // Create a session of the user
@@ -58,4 +65,4 @@ authRouter.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
-module.exports = authRouter;
+exports.default = authRouter;

@@ -1,7 +1,12 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
-const { isEmail } = require("validator").default;
-const userSchema = new Schema({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const validator_1 = __importDefault(require("validator"));
+const userSchema = new mongoose_1.Schema({
     username: {
         type: String,
         required: true,
@@ -15,8 +20,11 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
         validate: {
-            validator: isEmail
-        }
+            validator: (str) => {
+                validator_1.default.isEmail(str);
+            },
+            message: "`{VALUE}` is not a valid email address"
+        },
     },
     //TODO: Track activated accounts
     // isActivated: {
@@ -28,7 +36,7 @@ const userSchema = new Schema({
         required: true
     },
     links: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose_1.Schema.Types.ObjectId,
             ref: "Link"
         }],
     // Convenience helper to store the total number of hits
@@ -43,17 +51,17 @@ const userSchema = new Schema({
 // Hash passwords
 userSchema.pre("save", async function (next) {
     // Only run this function if password was actually modified (or is new)
-    if (!this.isModified('password'))
-        return next();
-    // Hash password and save it
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.isModified('password')) {
+        // Hash password and save it
+        this.password = await bcrypt_1.default.hash(this.password, 10);
+    }
     next();
 });
-userSchema.method("validatePassword", async function (password) {
+userSchema.methods.validatePassword = async function (password) {
     // Compare to check if the password is valid
-    const isValid = await bcrypt.compare(password, this.password);
+    const isValid = await bcrypt_1.default.compare(password, this.password);
     // Return the result
     return isValid;
-});
-const User = model("User", userSchema);
-module.exports = User;
+};
+const User = (0, mongoose_1.model)("User", userSchema);
+exports.default = User;

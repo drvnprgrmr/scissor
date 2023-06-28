@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose"
 import bcrypt from "bcrypt"
-import { isEmail }  from "validator"
+import v from "validator"
 
 
 const userSchema =  new Schema({
@@ -17,8 +17,11 @@ const userSchema =  new Schema({
         unique: true,
         trim: true,
         validate: {
-            validator: isEmail
-        }
+            validator: (str: string) => {
+                v.isEmail(str)
+            }, 
+            message: "`{VALUE}` is not a valid email address"
+        },
     },
     //TODO: Track activated accounts
     // isActivated: {
@@ -48,23 +51,23 @@ const userSchema =  new Schema({
 // Hash passwords
 userSchema.pre("save", async function (next) {
     // Only run this function if password was actually modified (or is new)
-    if (!this.isModified('password')) return next();
-
-    // Hash password and save it
-    this.password = await bcrypt.hash(this.password, 10);
+    if (this.isModified('password')) {
+        // Hash password and save it
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 
     next()
 })
 
-userSchema.method("validatePassword", async function (password) {
+userSchema.methods.validatePassword = async function(password: string) {
     // Compare to check if the password is valid
     const isValid = await bcrypt.compare(password, this.password)
 
     // Return the result
     return isValid
-})
+}
 
 
 const User = model("User", userSchema)
 
-module.exports = User
+export default User

@@ -1,5 +1,7 @@
-const { createClient } = require("redis");
-const redisClient = createClient({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const redis_1 = require("redis");
+const redisClient = (0, redis_1.createClient)({
     password: process.env.REDIS_PASSWORD,
     socket: {
         host: process.env.REDIS_HOST,
@@ -9,4 +11,4 @@ const redisClient = createClient({
 // Log redis errors
 redisClient.on("error", err => console.log("Redis Client Error", err));
 redisClient.on("connect", () => console.log("Redis connected successfully"));
-module.exports = redisClient;
+exports.default = redisClient;

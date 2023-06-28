@@ -1,11 +1,11 @@
-import { Router } from "express"
+import { Router, Request, Response } from "express"
 
 import User from "../models/user"
 
 const authRouter = Router()
 
 // Handle both signin and signup GET requests
-authRouter.get("/sign(in|up)", (req, res) => {
+authRouter.get("/sign(in|up)", (req: Request, res: Response) => {
     // Check if user is already signed in
     if (req.session.user) return res.redirect("/home")
 
@@ -13,7 +13,7 @@ authRouter.get("/sign(in|up)", (req, res) => {
 })
 
 // Create a new account
-authRouter.post("/signup", async (req, res) => {
+authRouter.post("/signup", async (req: Request, res: Response) => {
     const { username, email, password } = req.body
 
     // Create new user with given details
@@ -43,7 +43,7 @@ authRouter.post("/signup", async (req, res) => {
 })
 
 // Login to user account
-authRouter.post("/signin", async (req, res) => {
+authRouter.post("/signin", async (req: Request, res: Response) => {
     const { email, password } = req.body
 
     const user = await User.findOne({ email }).exec()
@@ -52,6 +52,7 @@ authRouter.post("/signin", async (req, res) => {
     if (!user) return res.status(404).send("Sorry that user does not exist")
 
     // Invalid password
+    // @ts-ignore
     if (! await user.validatePassword(password)) return res.status(401).send("Wrong password")
 
     // Create a session of the user
@@ -66,7 +67,7 @@ authRouter.post("/signin", async (req, res) => {
 })
 
 // Logout a user
-authRouter.get('/logout', (req, res) => {
+authRouter.get('/logout', (req: Request, res: Response) => {
     req.session.destroy((err) => {
         if (err) console.error(err)
         res.redirect('/')

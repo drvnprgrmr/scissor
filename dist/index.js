@@ -1,41 +1,47 @@
-require("dotenv").config();
-const express = require("express");
-const session = require("express-session");
-const rateLimit = require("express-rate-limit").default;
-const helmet = require("helmet").default;
-const compression = require("compression");
-const RedisSessionStore = require("connect-redis").default;
-const LimitSessionStore = require("rate-limit-redis").default;
-const router = require("./routes/root.router");
-const connectDB = require("./db");
-const redisClient = require("./redis");
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config({ path: "../.env" });
+const express_1 = __importDefault(require("express"));
+const express_session_1 = __importDefault(require("express-session"));
+const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+const helmet_1 = __importDefault(require("helmet"));
+const compression_1 = __importDefault(require("compression"));
+const connect_redis_1 = __importDefault(require("connect-redis"));
+const rate_limit_redis_1 = __importDefault(require("rate-limit-redis"));
+const root_router_1 = __importDefault(require("./routes/root.router"));
+const db_1 = __importDefault(require("./db"));
+const redis_1 = __importDefault(require("./redis"));
 // Check if we're in a production environment or not
 const isProd = process.env.NODE_ENV?.match(/production/i);
 // Set the port number
 const port = process.env.PORT || 8080;
 (async () => {
     // Connect to redis
-    await redisClient.connect();
+    await redis_1.default.connect();
     // Connect to MongoDB
-    await connectDB();
+    await (0, db_1.default)();
 })();
 // Create redis session store
-const sessionStore = new RedisSessionStore({
-    client: redisClient,
+const sessionStore = new connect_redis_1.default({
+    client: redis_1.default,
     prefix: "scissor-sessions:",
 });
 // Create rate limit store
-const limitStore = new LimitSessionStore({
+const limitStore = new rate_limit_redis_1.default({
     prefix: "scissor-ratelimit:",
-    sendCommand: (...args) => redisClient.sendCommand(args),
+    sendCommand: (...args) => redis_1.default.sendCommand(args),
 });
 // Create express app
-const app = express();
+const app = (0, express_1.default)();
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.set("trust proxy", true);
 // Set security headers
-app.use(helmet({
+app.use((0, helmet_1.default)({
     contentSecurityPolicy: {
         directives: {
             // Allow scripts from this source
@@ -44,11 +50,11 @@ app.use(helmet({
     },
 }));
 // Compress responses
-app.use(compression());
+app.use((0, compression_1.default)());
 // Process submitted forms
-app.use(express.urlencoded({ extended: false }));
+app.use(express_1.default.urlencoded({ extended: false }));
 // Initialize sessions
-app.use(session({
+app.use((0, express_session_1.default)({
     name: "sessionID",
     store: sessionStore,
     secret: process.env.SESSION_SECRET || "secret",
@@ -61,7 +67,7 @@ app.use(session({
     },
 }));
 // Add rate limiting based on the IP
-app.use(rateLimit({
+app.use((0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
     max: 150,
     standardHeaders: true,
@@ -69,9 +75,9 @@ app.use(rateLimit({
     store: limitStore,
 }));
 // Serve static assets
-app.use(express.static("public"));
+app.use(express_1.default.static("public"));
 // Use the apps routes
-app.use(router);
+app.use(root_router_1.default);
 // Handle unknown routes
 app.use((req, res, next) => {
     res.status(404).render("404");

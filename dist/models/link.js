@@ -1,6 +1,11 @@
-const { Schema, model } = require("mongoose");
-const { isURL } = require("validator").default;
-const hitSchema = new Schema({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const validator_1 = __importDefault(require("validator"));
+const hitSchema = new mongoose_1.Schema({
     type: {
         type: String,
         enum: ["click", "scan"],
@@ -17,12 +22,15 @@ const hitSchema = new Schema({
 }, {
     timestamps: { createdAt: true, updatedAt: false }
 });
-const linkSchema = new Schema({
+const linkSchema = new mongoose_1.Schema({
     url: {
         type: String,
         required: true,
         validate: {
-            validator: isURL
+            validator: (str) => {
+                return validator_1.default.isURL(str);
+            },
+            message: "`{VALUE}` is not a valid URL"
         }
     },
     description: String,
@@ -33,11 +41,11 @@ const linkSchema = new Schema({
         immutable: true,
     },
     createdBy: {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
     hits: [hitSchema] // Store information on all hits
 }, { timestamps: true });
-const Link = model("Link", linkSchema);
-module.exports = Link;
+const Link = (0, mongoose_1.model)("Link", linkSchema);
+exports.default = Link;

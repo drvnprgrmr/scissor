@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, Request, Response } from "express"
 
 import Link from "../models/link"
 import User from "../models/user"
@@ -6,7 +6,7 @@ import User from "../models/user"
 const userRouter = Router()
 
 // Get home page
-userRouter.get("/home", async (req, res) => {
+userRouter.get("/home", async (req: Request, res: Response) => {
     const { username, id } = req.session.user
 
     // Grab logged in user
@@ -21,14 +21,14 @@ userRouter.get("/home", async (req, res) => {
 })
 
 // Get account page
-userRouter.get("/account", async (req, res) => {
+userRouter.get("/account", async (req: Request, res: Response) => {
     const { username } = req.session.user
 
     res.render("user/account", { username })
 })
 
 // Update account 
-userRouter.patch("/", async (req, res) => {
+userRouter.patch("/", async (req: Request, res: Response) => {
     let err
 
     const { id } = req.session.user
@@ -37,6 +37,7 @@ userRouter.patch("/", async (req, res) => {
     const user = await User.findById(id).exec()
 
     // Update user 
+    // @ts-ignore
     if (await user.validatePassword(password)) {
         user.username = username
         
@@ -55,12 +56,13 @@ userRouter.patch("/", async (req, res) => {
 })
 
 // Delete account 
-userRouter.delete("/", async (req, res) => {
+userRouter.delete("/", async (req: Request, res: Response) => {
     const { id } = req.session.user
     const {password } = req.body
 
     const user = await User.findById(id).exec()
 
+    // @ts-ignore
     if (await user.validatePassword(password)) {
         // Delete links associated with user
         await Promise.all(user.links.map((linkId) => {
@@ -71,7 +73,9 @@ userRouter.delete("/", async (req, res) => {
         await user.deleteOne()
 
         // Clear session
-        req.session.destroy()
+        req.session.destroy((err) => {
+            if (err) console.error(err)
+        })
         res.end()
     }
     else res.send("Wrong password")

@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-async function connectDB(uri) {
+async function connectDB(uri?: string) {
     await mongoose.connect(
         MONGODB_URI || uri || "mongodb://localhost:27017/scissor",
 

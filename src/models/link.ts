@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose"
-import { isURL } from "validator"
+import v from "validator"
 
 const hitSchema = new Schema({
     type: {
@@ -25,7 +25,10 @@ const linkSchema = new Schema({
         type: String,
         required: true,
         validate: {
-            validator: isURL
+            validator: (str: string) => {
+                return v.isURL(str)
+            },
+            message: "`{VALUE}` is not a valid URL"
         }
     },
     description: String,  // Optional description of link
@@ -47,5 +50,4 @@ const linkSchema = new Schema({
 
 const Link = model("Link", linkSchema)
 
-
-module.exports = Link
+export default Link

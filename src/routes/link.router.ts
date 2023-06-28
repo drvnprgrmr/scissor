@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, Request, Response } from "express"
 
 import randomstring from "randomstring"
 import QRCode from "qrcode"
@@ -9,7 +9,7 @@ import Link from "../models/link"
 
 const linkRouter = Router()
 
-linkRouter.get("/", async (req, res) => {
+linkRouter.get("/", async (req: Request, res: Response) => {
     // Get the logged in user
     const { id, username } = req.session.user
     const { links } = await User.findById(id).populate("links").lean().exec()
@@ -19,13 +19,13 @@ linkRouter.get("/", async (req, res) => {
 })
 
 // Get page to create link
-linkRouter.get("/create", (req, res) => {
+linkRouter.get("/create", (req: Request, res: Response) => {
     const { username } = req.session.user
     res.render("link/create", { username })
 })
 
 // Create a new link
-linkRouter.post("/create", async (req, res) => {
+linkRouter.post("/create", async (req: Request, res: Response) => {
     let { url, description, alias } = req.body
     
     // If user didn't create custom alias
@@ -72,10 +72,11 @@ linkRouter.post("/create", async (req, res) => {
 })
 
 // Create a QR Code
-linkRouter.get("/qr", (req, res) => {
+linkRouter.get("/qr", (req: Request, res: Response) => {
     const text = req.query.text
 
     // Send QR code of text back
+    // @ts-ignore 
     QRCode.toDataURL(text, (err, url) => {
         if (err) console.error(err)
         
@@ -86,7 +87,7 @@ linkRouter.get("/qr", (req, res) => {
 })
 
 // View details on a link
-linkRouter.get("/:alias", async (req, res) => {
+linkRouter.get("/:alias", async (req: Request, res: Response) => {
     // Get alias from the url
     const alias = req.params.alias
 
@@ -95,12 +96,14 @@ linkRouter.get("/:alias", async (req, res) => {
     const user = await User.findById(id).populate("links").lean().exec()
 
     // Check for the link
+    // @ts-ignore
     const link = user.links.filter(l => l.alias === alias)[0]
 
     if (!link) return res.render("link/notFound", { username })
 
     // Calculate the number of clicks and scans
     let numClicks = 0, numScans = 0
+    // @ts-ignore
     for (let hit of link.hits) {
         if (hit.type === "click") numClicks++
         else if (hit.type === "scan") numScans++
