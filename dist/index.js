@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config({ path: "../.env" });
+dotenv_1.default.config({ path: __dirname + "/../.env" });
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
@@ -38,7 +38,7 @@ const limitStore = new rate_limit_redis_1.default({
 // Create express app
 const app = (0, express_1.default)();
 app.set("view engine", "ejs");
-app.set("views", "views");
+app.set("views", __dirname + "/../views");
 app.set("trust proxy", true);
 // Set security headers
 app.use((0, helmet_1.default)({
