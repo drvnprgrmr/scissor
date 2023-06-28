@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-dotenv.config({ path: "../.env" })
+dotenv.config({ path: __dirname + "/../.env" })
 
 import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
@@ -52,7 +52,7 @@ const limitStore = new LimitSessionStore({
 const app = express();
 
 app.set("view engine", "ejs");
-app.set("views", "views");
+app.set("views", __dirname + "/../views");
 app.set("trust proxy", true);
 
 // Set security headers
