@@ -57,7 +57,7 @@ Put in the appropriate fields from your services (MongoDB and Redis) and add an 
 
 ### Install packages and run the server
 Make sure you have [NodeJS](https://nodejs.org/en/download) installed and type in `npm install` in the terminal of your root directory. \
-After that, type in `node ./dist/index.js` and you should get something like this in your terminal:
+After that, type in `node ./dist/index.js` and you should get something like this in your terminal: \
 <br />
 ![image](https://github.com/drvnprgrmr/scissor/assets/67306305/9ecf60be-c92d-4177-8722-ee6dc3c8f7f2)
 
