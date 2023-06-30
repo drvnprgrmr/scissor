@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "An application to make working with and handling links easier",
   "main": "./dist/index.js",
+  "engines": {
+    "node": "16.17.1"
+  },
   "scripts": {
     "test": "mocha",
     "build": "tsc",
